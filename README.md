@@ -26,6 +26,8 @@
 
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/mix-pop.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图卷积模块架构图</div> </center>
 
+# Run code
+`Python run.py`
 # 实验结果
 
 本文各模型对沉井的七个姿态指标进行预测，并使用相关系数R2、均方根误差RMSE、平均绝对百分比误差MAPE，作为评价指标。各模型的预测结果如下表。
