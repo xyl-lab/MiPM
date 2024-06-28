@@ -110,20 +110,6 @@
 * https://github.com/MAZiqing/FEDformer
 * 参数设置: d_k:40, dropout: 0.1
 
-## MrCAN
-
-* @article{zhang2023mrcan,
-    title={MrCAN: Multi-relations aware convolutional attention network for multivariate time series forecasting},
-    author={Zhang, Jing and Dai, Qun},
-    journal={Information Sciences},
-    volume={643},
-    pages={119277},
-    year={2023},
-    publisher={Elsevier}
-  }
-* https://github.com/JZhangNA/MrCAN
-* 参数设置: dropout:0.3, filter_size:4, d_k:20
-
 
 
 
