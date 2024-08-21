@@ -36,8 +36,19 @@
 
 # 基线模型
 
-针对以下基线模型，本文根据原网络结构记忆本文的数据集，进行调参，并给出参数设置。其余未出现在下面模型中的基线模型由本文实现
+针对以下基线模型，本文根据原网络结构以及本文的数据集，进行调参，给出参数的选择范文以及参数的设置结果。
+## RM
 
+* 参数选取范围：n_estimator:[100, 200, 300, 400, ..., 2000], max_depth:[1, 2, 3, ..., 10], min_samples_leaf: [1, 2, 3, ..., 10]
+* 参数设置：n_estimator: 600, max_depth: 10, min_samples_leaf: 1
+
+## XGBoost
+
+* 参数选取范围：n_estimator:[100, 200, 300, 400, ..., 2000], max_depth:[1, 2, 3, ..., 10]
+* 参数设置：n_estimator: 1200, max_depth: 6
+## LSTM
+
+* 为了简单起见，本文将LSTM网络的循环次数设置为1
 ## DARNN
 
 * @article{qin2017dual,
@@ -47,6 +58,7 @@
     year={2017}
   }
 * https://github.com/sunfanyunn/DARNN
+* 参数选取范围：hidden_size：[16, 32, 64, 128], dropout: [0.1, 0.2, 0.3, 0.4]
 * 参数设置: hidden_size:128, dropout: 0.1
 
 ## LSTNet
@@ -59,6 +71,7 @@
     year={2018}
   }
 * https://github.com/laiguokun/LSTNet
+* 参数选取范围：hidden_size: [16, 32, 64, 128], d_model: [80, 120, 160], filter_size: [4, 6, 9], dropout: [0.1, 0.2, 0.3, 0.4], highway_window: [8, 16, 32]
 * 参数设置: hidden_size: 64, d_model: 160, filter_size: 4, dropout: 0.30000000000000004, highway_window: 16
 
 ## STGNN
@@ -71,8 +84,48 @@
     year={2020}
   }
 * https://github.com/LMissher/STGNN
+* 参数选取范围：d_k：[20, 30, 40], num_leayers: [1, 2, 3, 4]
 * 参数设置: d_k:20, num_layers: 1
+## WaveForM
 
+* @inproceedings{yang2023waveform,
+  title={WaveForM: Graph enhanced wavelet learning for long sequence forecasting of multivariate time series},
+  author={Yang, Fuhao and Li, Xin and Wang, Min and Zang, Hongyu and Pang, Wei and Wang, Mingzhong},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={37},
+  number={9},
+  pages={10754--10761},
+  year={2023}
+  }
+* https://github.com/alanyoungCN/WaveForM
+* 参数选取范围: dropout: [0.1, 0.2, 0.3, 0.4], subgraph_size: [1, 2, 3, 4, 5, 6] , node_dim: [20, 30, 40], n_gnn_kayer: [1, 2, 3, 4]
+* 参数设置：dropout: 0.3, subgraph_size: 6, node_dim: 40, n_gnn_layer: 3
+## MSGNet
+
+* @inproceedings{cai2024msgnet,
+  title={Msgnet: Learning multi-scale inter-series correlations for multivariate time series forecasting},
+  author={Cai, Wanlin and Liang, Yuxuan and Liu, Xianggen and Feng, Jianshuai and Wu, Yuankai},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={38},
+  number={10},
+  pages={11141--11149},
+  year={2024}
+  }
+* https://github.com/YoZhibo/MSGNet
+* 参数选取范围：top_k: [1, 2, 3, 4, 5], gcn_depth: [1, 2, 3, 4], propalpha: [0.1, 0.2, 0.3, 0.4], d_model: [80, 120, 160], dropout: [0.1, 0.2, 0.3, 0.4]
+* 参数设置：top_k: 3, gcn_depth: 3, propalpha: 0.3, d_model: 120, dropout: 0.1,  
+## FourierGNN
+
+* @article{yi2024fouriergnn,
+  title={FourierGNN: Rethinking multivariate time series forecasting from a pure graph perspective},
+  author={Yi, Kun and Zhang, Qi and Fan, Wei and He, Hui and Hu, Liang and Wang, Pengyang and An, Ning and Cao, Longbing and Niu, Zhendong},
+  journal={Advances in Neural Information Processing Systems},
+  volume={36},
+  year={2024}
+  }
+* https://github.com/aikunyi/FourierGNN
+* 参数选取范围：embedding_size: [32, 64, 128, 256, 512], hidden_size: [16, 32, 64, 128]
+* 参数设置：embedding_size: 256, hidden_size: 512 
 ## MTGNN
 
 * @inproceedings{wu2020connecting,
@@ -83,6 +136,7 @@
     year={2020}
   }
 * https://github.com/nnzhan/MTGNN
+* 参数选取范围：layers: [1, 2, 3, 4], propalpha: [0.1, 0.2, 0.3, 0.4], subgraph_size: [2, 3, 4], out_channels: [16, 32, 64, 128], gcn_depth: [1, 2, 3, 4]
 * 参数设置: layers: 3, propalpha: 0.2, subgraph_size: 2, out_channels:64, gcn_depth:1
 
 ## Informer
@@ -97,6 +151,7 @@
     year={2021}
   }
 * https://github.com/zhouhaoyi/Informer2020
+* 参数选取范围：factor: [3, 4, 5], d_k: [20, 30, 40], dropout: [0.1, 0.2, 0.3, 0.4]
 * 参数设置: factor: 4, d_k:40, dropout: 0.1
 
 ## FEDformer
@@ -110,6 +165,7 @@
     organization={PMLR}
   }
 * https://github.com/MAZiqing/FEDformer
+* 参数选取范围：d_k: [20, 30, 40], dropout: [0.1, 0.2, 0.3, 0.4]
 * 参数设置: d_k:40, dropout: 0.1
 
 
