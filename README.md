@@ -5,6 +5,24 @@
 ## 背景
 
 沉井作为基础结构，在桥梁建造中，被广泛应用。在沉井建造过程中，实时准确的下沉姿态预测，有助于降低事故风险，提高工程质量。然而，常用的预测模型，如统计模型、机器学习模型，无法处理时序数据中的非线性时空特性，如结构应力，不适用于沉井下沉姿态的预测。另外，现有的针对沉井下沉姿态预测进行的工作，无法同时对沉井多个姿态指标进行预测。因此，本文提出了多指标预测模型MiPM。对沉井的姿态指标：下沉量、横/纵向倾斜度、横/纵向顶口偏位、横/纵向底口偏位，共七个指标进行预测。在沉井下沉过程中，沉井姿态的变化导致底部结构应力的变化，本文使用结构应力作为辅助数据，提高模型的预测精度。
+## 七个沉井姿态指标介绍
+如沉井横向位置图所示，沉井四周布置四个传感器，分别收集该点位的三维坐标$x,y,z$，依据沉井规格的设定，计算沉井的七个姿态指标
+
+* **下沉量**：沉井顶口中心点的下沉量，如沉井横向位置图中，沉井中心点的三维坐标为四侧三维坐标的均值，沉井下沉量即是指一段时间内的$z$的下沉高度。
+
+* **横向倾斜度**：横向代表上游和下游的方向，当沉井偏向下游时，横向倾斜度为正。如沉井横向位置图中，当沉井在上下游轴线上的倾斜，定义为横向倾斜度
+
+* 纵向倾斜度：纵向代表如皋和张家港的方向，当沉井偏向张家港时，纵向倾斜度为正。如沉井纵向位置图中，当沉井在张家港和如皋轴线上的倾斜，定义为纵向倾斜度
+
+* **底口偏位（横向、纵向）**：代表沉井底口中心点的实时位置与预设中心点位置的横纵向偏差。如沉井底口位置图所示，白色虚线框及其轴心是预定义的中心位置，黄色实线框及其轴心是实际沉井的位置，轴心之间横纵方向的偏差沉井的底口偏位
+
+* **顶口偏位（横向、纵向）**：代表沉井顶口中心点的实时位置与预设中心点位置的横纵向偏差。依据底口偏位，顶口偏位同理
+
+  <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/TBclination.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">沉井横向位置图</div> </center>
+
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/RLclination.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">沉井纵向位置图</div> </center>
+
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/Bottom_offset.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">沉井底口位置图</div> </center>
 
 ## 模型结构
 
@@ -26,17 +44,43 @@
 
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/mix-pop.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图卷积模块架构图</div> </center>
 
+## 模型算法步骤
+
+**输入**：结构应力序列（辅助序列）$X\in R^{Sum\times D}$，沉井下沉姿态序列（目标序列）$Y\in R^{Sum\times M}$，其中$sum$表示时间序列的总长度，$D=39$表示结构应力系列的数量，$M=7$表示预测姿态指标的数量
+
+**输出**：沉井下沉姿态单步预测精度
+
+1. $I = concat(X,Y) \in R^{Sum\times (D+M)}， X\rightarrow Y:R^{J\times N} \rightarrow R^{1\times M}$ // 构造输入时间序列，滑动窗口对数据进行重构，构造模型的输入、输出
+
+2. $I\rightarrow H, H\rightarrow A$ // 根据输入时间序列$X$建立图邻接矩阵$A\in R^{N\times N}$：
+
+   **loop**:
+
+   	1. $TF$ // 提取时间特征
+   	1. $SF$ // 提取空间特征
+
+3. 通过交织的网络结构对时空特征进行融合
+
+4. $loss = MSE(\hat{y}, y)$ // 模型输出预测结果$\hat{y}\in R^{1\times M}$，并计算损失函数
+
+5. $loss.backforward()$ // 梯度下降算法进行参数调优
+
+6. $model.save()$ // 保存训练完成的模型
+
+7. $model.load()$ // 模型加载
+
+8. $\hat{Y}_{test}\leftarrow model(X_{test})$根据测试集得到姿态预测结果$\hat {Y}_{test}$
+
+9. $RMSE, R^2, MAPE = metric(Y_{test}, \hat{Y}_{test})$ // 计算下沉姿态的预测精度
+
 # Run code
 `Python run.py`
-# 实验结果
 
-本文各模型对沉井的七个姿态指标进行预测，并使用相关系数R2、均方根误差RMSE、平均绝对百分比误差MAPE，作为评价指标。各模型的预测结果如下表。
+# 实验环境
+实验在运行Ubuntu 18.04.6 LTS操作系统、配备RTX A5000 GPU、Intel Xeon Gold 6230R CPU的服务器上进行。
+# 基线模型参数设置
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/study_results.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">各模型的预测结果</div> </center>
-
-# 基线模型
-
-针对以下基线模型，本文根据原网络结构以及本文的数据集，进行调参，给出参数的选择范文以及参数的设置结果。
+针对以下基线模型，本文根据参考文献的原模型网络结构以及本文的数据集，进行调参，给出参数的选择范围以及设置结果。
 ## RM
 
 * 参数选取范围：n_estimator:[100, 200, 300, 400, ..., 2000], max_depth:[1, 2, 3, ..., 10], min_samples_leaf: [1, 2, 3, ..., 10]
@@ -112,8 +156,8 @@
   year={2024}
   }
 * https://github.com/YoZhibo/MSGNet
-* 参数选取范围：top_k: [1, 2, 3, 4, 5], gcn_depth: [1, 2, 3, 4], propalpha: [0.1, 0.2, 0.3, 0.4], d_model: [80, 120, 160], dropout: [0.1, 0.2, 0.3, 0.4]
-* 参数设置：top_k: 3, gcn_depth: 3, propalpha: 0.3, d_model: 120, dropout: 0.1,  
+* 参数选取范围：top_k: [1, 2, 3, 4, 5], gcn_depth: [1, 2, 3, 4], propalpha: [0.1, 0.2, 0.3, 0.4], node_dim: [10, 20, 30, 40], d_model: [80, 120, 160], dropout: [0.1, 0.2, 0.3, 0.4]
+* 参数设置：top_k: 5, gcn_depth: 1, propalpha: 0.4, node_dim: 30, d_model: 160, dropout: 0.1,  
 ## FourierGNN
 
 * @article{yi2024fouriergnn,
@@ -125,7 +169,7 @@
   }
 * https://github.com/aikunyi/FourierGNN
 * 参数选取范围：embedding_size: [32, 64, 128, 256, 512], hidden_size: [16, 32, 64, 128]
-* 参数设置：embedding_size: 256, hidden_size: 512 
+* 参数设置：embedding_size: 32, hidden_size: 128 
 ## MTGNN
 
 * @inproceedings{wu2020connecting,
@@ -137,7 +181,7 @@
   }
 * https://github.com/nnzhan/MTGNN
 * 参数选取范围：layers: [1, 2, 3, 4], propalpha: [0.1, 0.2, 0.3, 0.4], subgraph_size: [2, 3, 4], out_channels: [16, 32, 64, 128], gcn_depth: [1, 2, 3, 4]
-* 参数设置: layers: 3, propalpha: 0.2, subgraph_size: 2, out_channels:64, gcn_depth:1
+* 参数设置: layers: 3, propalpha: 0.2, subgraph_size: 2, out_channels:64, gcn_depth:2
 
 ## Informer
 
@@ -167,6 +211,11 @@
 * https://github.com/MAZiqing/FEDformer
 * 参数选取范围：d_k: [20, 30, 40], dropout: [0.1, 0.2, 0.3, 0.4]
 * 参数设置: d_k:40, dropout: 0.1
+# 实验结果
+
+本文各模型对沉井的七个姿态指标进行预测，并使用相关系数R2、均方根误差RMSE、平均绝对百分比误差MAPE，作为评价指标。各模型的预测结果如下表。
+
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/study_results.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">各模型的预测结果</div> </center>
 
 
 
