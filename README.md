@@ -12,13 +12,13 @@
 
 * **横向倾斜度**：横向代表上游和下游的方向，当沉井偏向下游时，横向倾斜度为正。如沉井横向位置图中，当沉井在上下游轴线上的倾斜，定义为横向倾斜度
 
-* 纵向倾斜度：纵向代表如皋和张家港的方向，当沉井偏向张家港时，纵向倾斜度为正。如沉井纵向位置图中，当沉井在张家港和如皋轴线上的倾斜，定义为纵向倾斜度
+* **纵向倾斜度**：纵向代表如皋和张家港的方向，当沉井偏向张家港时，纵向倾斜度为正。如沉井纵向位置图中，当沉井在张家港和如皋轴线上的倾斜，定义为纵向倾斜度
 
 * **底口偏位（横向、纵向）**：代表沉井底口中心点的实时位置与预设中心点位置的横纵向偏差。如沉井底口位置图所示，白色虚线框及其轴心是预定义的中心位置，黄色实线框及其轴心是实际沉井的位置，轴心之间横纵方向的偏差沉井的底口偏位
 
 * **顶口偏位（横向、纵向）**：代表沉井顶口中心点的实时位置与预设中心点位置的横纵向偏差。依据底口偏位，顶口偏位同理
 
-  <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/TBclination.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">沉井横向位置图</div> </center>
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/TBclination.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">沉井横向位置图</div> </center>
 
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/RLclination.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">沉井纵向位置图</div> </center>
 
