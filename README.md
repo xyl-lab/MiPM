@@ -1,12 +1,12 @@
 
 # 文件目录说明
-* **Dataset**：保存底部结构应力数据以及沉井下沉姿态数据，主要包括两个csv文件，stress.csv保存底部结构应力数据、targets.csv保存沉井下沉姿态数据
+* **Dataset**：保存底部结构应力数据以及沉井下沉姿态数据，主要包括两个csv文件，`stress.csv`保存底部结构应力数据、`targets.csv`保存沉井下沉姿态数据
 * **logfiles**：保存MiPM模型四折交叉验证的调参过程
-* **Modelpkl**：保存训练好的基线模型，包括LR、LSTM、XGBoost，以便用于计算模型对测试集的预测精度
-* **networks**：保存MiPM模型结构以及LSTM模型结构的相关文件，其中net.py以及layer.py保存MiPM模型结构，LSTMModel.py保存LSTM模型结构
-* **pictures**：保存readme文件中所使用到的图片
+* **Modelpkl**：保存训练好的基线模型，包括`LR`、`LSTM`、`XGBoost`，以便用于计算模型对测试集的预测精度
+* **networks**：保存MiPM模型结构以及LSTM模型结构的相关文件，其中`net.py`以及`layer.py`保存MiPM模型结构，`LSTMModel.py`保存LSTM模型结构
+* **pictures**：保存`README`文件中所使用到的图片
 * **Tools**：保存数据预处理以及模型训练调参过程的相关文件
-* **Baseline.ipynb**：基线模型LR、LSTM、XGBoost、RF的参数调优过程
+* **Baseline.ipynb**：基线模型`LR`、`LSTM`、`XGBoost`、`RF`的参数调优过程
 # MiPM
 
 ## 背景
