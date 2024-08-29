@@ -220,9 +220,9 @@
 * https://github.com/MAZiqing/FEDformer
 * 参数选取范围：d_k: [20, 30, 40], dropout: [0.1, 0.2, 0.3, 0.4]
 * 参数设置: d_k:40, dropout: 0.1
-# MiPM模型参数设置
-* 基于MTGNN模型的参数调优，对MiPM模型的时间/图卷积模块的数量L、输出通道数C、1D扩展卷积层的内核大小c、膨胀系数q、信息传播的深度K进行参数设置
-* *L*: 3, *C*: 64, *c*: 7, *q*: 2, *K*: 2
+# 实验环境
+* 服务器硬件配置：操作系统是Ubuntu 18.04.6 LTS、显卡型号是RTX A5000 GPU、CPU型号是Intel Xeon Gold 6230R CPU。
+* 软件环境：python3.9、pytorch2.10GPU
 
 # 实验结果
 
