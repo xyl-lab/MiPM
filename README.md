@@ -52,7 +52,36 @@
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/mix-pop.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图卷积模块架构图</div> </center>
 
 ## 模型训练与预测过程
-如下图，包括三个部分，数据重构、模型训练、以及模型预测。其中，数据重构是指以滑动窗口的方式对原始数据进行重构；模型训练是指以训练集进行模型调参，得到训练好的模型；模型预测是指以测试集计算模型的预测精度
+
+首先，用伪代码说明模型的训练与预测过程，如算法1。算法1主要包括三个部分，数据重构、模型训练、以及模型预测。其中，数据重构是指以滑动窗口的方式对原始数据进行重构；模型训练是指以训练集进行模型调参，得到训练好的模型；模型预测是指以测试集计算模型的预测精度。除此以外，为了使算法1更加清晰，利用可视化的方式进一步对模型的训练和预测过程进行说明，如下图。
+
+**算法1：**模型训练与预测过程
+
+**输入：**结构应力序列***XX***，沉井下沉姿态序列***YY***，时间窗口大小*J*，MiPM模型超参数*params*，模型训练次数*epoches*，模型学习率*lr*，batch的大小*B*
+
+**输出：**沉井下沉姿态单步预测精度$RMSE,\ MAPE,\ R^2$
+
+1. 根据时间窗口大小*J*对***XX***、***YY***进行数据重构，得到*Dataset*，划分*Dataset*，得到*trainSet*,*valSet*,*testSet*
+
+   //模型训练过程
+
+2. $model \leftarrow MiPM.init(params)$ //根据*params*初始化 MiPM 模型，得到 *model*
+
+3. $for\ epoch\ in\ range(l,\ epochs+1):$
+
+4. ​       $for\ input, \ target\ in\ trainSet:$
+5. ​                $pred = model.forward(input)   $ //前向传播，计算沉井下沉姿态预测值$pred$       
+6. ​                $loss = MSELoss(pred, target) $ //根据姿态预测值$pred$以及姿态实测值$target$计算$MSE$损失$loss$                      
+7. ​                $gradients = model.backward(loss)$ //反向传播，计算梯度                        
+8. ​                $model.updateParameters(gradients, lr)$ //根据模型学习率*lr*，更新模型参数               # 打印每个epoch的损失    print("Epoch:", epoch, 
+9. ​       $end\ for$
+10. $end\ for$
+11. $for\ input, \ target\ in\ testSet:$
+12. ​       $pred = model.forward(input)   $ //前向传播，计算沉井下沉姿态预测值$pred$       
+13. ​      $preds.add(pred), targets.add(target)$ //保存沉井下沉姿态预测值及其对应的实测值
+14. $end\ for$
+15. $return\ metric(preds,\ targets)$ //计算模型的预测精度$RMSE,\ MAPE,\ R^2$，并返回
+
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/Data_reconstruction.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">模型训练与预测可视化</div> </center>
 
 # Run code
@@ -191,6 +220,10 @@
 * https://github.com/MAZiqing/FEDformer
 * 参数选取范围：d_k: [20, 30, 40], dropout: [0.1, 0.2, 0.3, 0.4]
 * 参数设置: d_k:40, dropout: 0.1
+# MiPM模型参数设置
+* 基于MTGNN模型的参数调优，对MiPM模型的时间/图卷积模块的数量L、输出通道数C、1D扩展卷积层的内核大小c、膨胀系数q、信息传播的深度K进行参数设置
+* *L*: 3, *C*: 64, *c*: 7, *q*: 2, *K*: 2
+
 # 实验结果
 
 本文各模型对沉井的七个姿态指标进行预测，并使用相关系数R2、均方根误差RMSE、平均绝对百分比误差MAPE，作为评价指标。各模型的预测结果如下表。
