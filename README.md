@@ -1,5 +1,12 @@
 
-
+# 文件目录说明
+* Dataset:保存底部结构应力数据以及沉井下沉姿态数据，主要包括两个csv文件，stress.csv保存底部结构应力数据、targets.csv保存沉井下沉姿态数据
+* logfiles:保存MiPM模型四折交叉验证的调参过程
+* Modelpkl:保存训练好的基线模型，包括LR、LSTM、XGBoost，以便用于计算模型对测试集的预测精度
+* networks:保存MiPM模型结构以及LSTM模型结构的相关文件，其中net.py以及layer.py保存MiPM模型结构，LSTMModel.py保存LSTM模型结构
+* pictures:保存readme文件中所使用到的图片
+* Tools:保存数据预处理以及模型训练调参过程的相关文件
+* Baseline.ipynb:基线模型LR、LSTM、XGBoost、RF的参数调优过程
 # MiPM
 
 ## 背景
@@ -44,40 +51,12 @@
 
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/mix-pop.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图卷积模块架构图</div> </center>
 
-## 模型算法步骤
-
-**输入**：结构应力序列（辅助序列）$X\in R^{Sum\times D}$，沉井下沉姿态序列（目标序列）$Y\in R^{Sum\times M}$，其中$sum$表示时间序列的总长度，$D=39$表示结构应力系列的数量，$M=7$表示预测姿态指标的数量
-
-**输出**：沉井下沉姿态单步预测精度
-
-1. $I = concat(X,Y) \in R^{Sum\times (D+M)}， X\rightarrow Y:R^{J\times N} \rightarrow R^{1\times M}$ // 构造输入时间序列，滑动窗口对数据进行重构，构造模型的输入、输出
-
-2. $I\rightarrow H, H\rightarrow A$ // 根据输入时间序列$X$建立图邻接矩阵$A\in R^{N\times N}$：
-
-   **loop**:
-
-   	1. $TF$ // 提取时间特征
-   	1. $SF$ // 提取空间特征
-
-3. 通过交织的网络结构对时空特征进行融合
-
-4. $loss = MSE(\hat{y}, y)$ // 模型输出预测结果$\hat{y}\in R^{1\times M}$，并计算损失函数
-
-5. $loss.backforward()$ // 梯度下降算法进行参数调优
-
-6. $model.save()$ // 保存训练完成的模型
-
-7. $model.load()$ // 模型加载
-
-8. $\hat{Y}_{test}\leftarrow model(X_{test})$根据测试集得到姿态预测结果$\hat {Y}_{test}$
-
-9. $RMSE, R^2, MAPE = metric(Y_{test}, \hat{Y}_{test})$ // 计算下沉姿态的预测精度
+## 模型训练与预测过程
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/Data_reconstruction.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">模型训练与预测可视化</div> </center>
 
 # Run code
 `Python run.py`
 
-# 实验环境
-实验在运行Ubuntu 18.04.6 LTS操作系统、配备RTX A5000 GPU、Intel Xeon Gold 6230R CPU的服务器上进行。
 # 基线模型参数设置
 
 针对以下基线模型，本文根据参考文献的原模型网络结构以及本文的数据集，进行调参，给出参数的选择范围以及设置结果。
