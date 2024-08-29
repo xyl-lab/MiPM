@@ -52,6 +52,7 @@
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/mix-pop.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图卷积模块架构图</div> </center>
 
 ## 模型训练与预测过程
+如下图，包括三个部分，数据重构、模型训练、以及模型预测。其中，数据重构是指以滑动窗口的方式对原始数据进行重构；模型训练是指以训练集进行模型调参，得到训练好的模型；模型预测是指以测试集计算模型的预测精度
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/Data_reconstruction.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">模型训练与预测可视化</div> </center>
 
 # Run code
