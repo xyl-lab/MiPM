@@ -68,16 +68,16 @@
 
 3. $for\ epoch\ in\ range(l,\ epochs+1):$
 
-4. &emsp;$for\ input, \ target\ in\ trainSet:$
-5. &emsp;&emsp;$pred = model.forward(input)$ //前向传播，计算沉井下沉姿态预测值$pred$       
-6. &emsp;&emsp;$loss = MSELoss(pred, target)$ //根据姿态预测值$pred$以及姿态实测值$target$计算$MSE$损失$loss$                      
-7. &emsp;&emsp;$gradients = model.backward(loss)$ //反向传播，计算梯度                        
-8. &emsp;&emsp;$model.updateParameters(gradients, lr)$ //根据模型学习率*lr*，更新模型参数               
-9. &emsp;$end\ for$
+4. &emsp; $for\ input, \ target\ in\ trainSet:$
+5. &emsp;&emsp; $pred = model.forward(input)$ //前向传播，计算沉井下沉姿态预测值$pred$       
+6. &emsp;&emsp; $loss = MSELoss(pred, target)$ //根据姿态预测值$pred$以及姿态实测值$target$计算$MSE$损失$loss$                      
+7. &emsp;&emsp; $gradients = model.backward(loss)$ //反向传播，计算梯度                        
+8. &emsp;&emsp; $model.updateParameters(gradients, lr)$ //根据模型学习率*lr*，更新模型参数               
+9. &emsp; $end\ for$
 10. $end\ for$
 11. $for\ input, \ target\ in\ testSet:$
-12. &emsp;$pred = model.forward(input)$ //前向传播，计算沉井下沉姿态预测值$pred$       
-13. &emsp;$preds.add(pred), targets.add(target)$ //保存沉井下沉姿态预测值及其对应的实测值
+12. &emsp; $pred = model.forward(input)$ //前向传播，计算沉井下沉姿态预测值$pred$       
+13. &emsp; $preds.add(pred), targets.add(target)$ //保存沉井下沉姿态预测值及其对应的实测值
 14. $end\ for$
 15. $return\ metric(preds,\ targets)$ //计算模型的预测精度$RMSE,\ MAPE,\ R^2$，并返回
 
