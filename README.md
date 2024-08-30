@@ -1,5 +1,5 @@
 
-# 文件目录说明
+# 源码文件目录说明
 * **Dataset**：保存底部结构应力数据以及沉井下沉姿态数据，主要包括两个csv文件，`stress.csv`保存底部结构应力数据、`targets.csv`保存沉井下沉姿态数据
 * **logfiles**：保存MiPM模型四折交叉验证的调参过程
 * **Modelpkl**：保存训练好的基线模型，包括`LR`、`LSTM`、`XGBoost`，以便用于计算模型对测试集的预测精度
@@ -7,9 +7,7 @@
 * **pictures**：保存`README`文件中所使用到的图片
 * **Tools**：保存数据预处理以及模型训练调参过程的相关文件
 * **Baseline.ipynb**：基线模型`LR`、`LSTM`、`XGBoost`、`RF`的参数调优过程
-# MiPM
-
-## 背景
+# 背景
 
 沉井作为基础结构，在桥梁建造中，被广泛应用。在沉井建造过程中，实时准确的下沉姿态预测，有助于降低事故风险，提高工程质量。然而，常用的预测模型，如统计模型、机器学习模型，无法处理时序数据中的非线性时空特性，如结构应力，不适用于沉井下沉姿态的预测。另外，现有的针对沉井下沉姿态预测进行的工作，无法同时对沉井多个姿态指标进行预测。因此，本文提出了多指标预测模型MiPM。对沉井的姿态指标：下沉量、横/纵向倾斜度、横/纵向顶口偏位、横/纵向底口偏位，共七个指标进行预测。在沉井下沉过程中，沉井姿态的变化导致底部结构应力的变化，本文使用结构应力作为辅助数据，提高模型的预测精度。
 ## 七个沉井姿态指标介绍
@@ -31,6 +29,7 @@
 
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/bottom_offset.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">沉井底口位置图</div> </center>
 
+# MiPM
 ## 模型结构
 
 基于卷积神经网络以及图神经网络建立深度学习模型，提取沉井下沉姿态数据以及结构应力之间的时空特征，预测沉井的下沉姿态。该模型主要分为图学习层、时间卷积模块、图卷积模块、输入输出模块。
@@ -84,8 +83,6 @@
 
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/Data_reconstruction.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">模型训练与预测可视化</div> </center>
 
-# Run code
-`Python run.py`
 
 # 基线模型参数设置
 
@@ -223,7 +220,8 @@
 # 实验环境
 * 服务器硬件配置：操作系统是Ubuntu 18.04.6 LTS、显卡型号是RTX A5000 GPU、CPU型号是Intel Xeon Gold 6230R CPU。
 * 软件环境：python3.9、pytorch2.10GPU
-
+# Run code
+`Python run.py`
 # 实验结果
 
 本文各模型对沉井的七个姿态指标进行预测，并使用相关系数R2、均方根误差RMSE、平均绝对百分比误差MAPE，作为评价指标。各模型的预测结果如下表。
