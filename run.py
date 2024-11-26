@@ -20,12 +20,12 @@ logging.basicConfig(filename=filename, format='%(asctime)s %(filename)s %(leveln
                     datefmt='%a %d %b %Y %H:%M:%S', filemode='w', level=logging.INFO)
 prediction_horizon = 1
 scaler_cols, scaler_target, X_train, y_train, X_test, y_test = Data_Pre(
-    horizon=prediction_horizon)
+    horizon=prediction_horizon, dpath='../../Datasets/FDatasets/phase_1/stress.csv', tpath='../../Datasets/FDatasets/phase_1/targets.csv')
 train_len = int(X_train.shape[0] * 0.75)
 val_len = X_train.shape[0] - train_len
 train_loader, val_loader = Training_Loader(
-    X_train[:train_len], y_train[:train_len], X_train[train_len:], y_train[train_len:])
-test_loader = Testing_Loader(X_test, y_test)
+    X_train[:train_len], y_train[:train_len], X_train[train_len:], y_train[train_len:], dsize=35)
+test_loader = Testing_Loader(X_test, y_test, dsize=35)
 param_grid = {
     'dropout': [0.1 * i for i in range(1, 5)],
     'leaky_rate': [0.1 * i for i in range(1, 5)],
@@ -33,8 +33,13 @@ param_grid = {
 }
 add_bf = 0
 base_estimator = gtnet(device_name=device_name).to(device)
-best_params = get_best_params(
-    base_estimator, param_grid, X_train, y_train, device)
+# best_params = get_best_params(
+#     base_estimator, param_grid, X_train, y_train, device)
+best_params = {
+    'dropout': 0.2,
+    'leaky_rate': 0.1,
+    'propalpha': 0.3,
+}
 logging.info('best params: propalpha: {}, leaky_rate:{}, dropout: {}'.format(
     best_params['propalpha'], best_params['leaky_rate'], best_params['dropout']))
 model = clone(clone(base_estimator).set_params(**best_params))
@@ -96,10 +101,10 @@ for epoch in range(epochs):
         filename = "./MiPM.pt"
         torch.save(model.state_dict(), filename)
     epoch_end = time.monotonic()
-    if epoch % 10 == 0:
-        logging.info(
-            '| end of epoch {:3d} | time: {:5.2f}s | train_loss {:5.4f} | val_loss {:5.4f}'.format(
-                epoch, (epoch_end - epoch_start), (mse_train/train_len)**0.05, (mse_val/val_len)**0.05))
+    # if epoch % 10 == 0:
+    logging.info(
+        '| end of epoch {:3d} | time: {:5.2f}s | train_loss {:5.4f} | val_loss {:5.4f}'.format(
+            epoch, (epoch_end - epoch_start), (mse_train/train_len)**0.05, (mse_val/val_len)**0.05))
 train_end = time.monotonic()
 
 # traing time

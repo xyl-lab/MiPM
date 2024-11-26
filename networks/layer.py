@@ -45,7 +45,7 @@ class LatentCorrelationLayer(nn.Module):
         input = input.permute(1, 0, 2).contiguous()
         attention = self.GrapAttentionLayer(input)
         attention = torch.mean(attention, dim=0)
-        attention = 0.5 * (attention + attention.T)
+        # attention = 0.5 * (attention + attention.T)
         return attention
 
 

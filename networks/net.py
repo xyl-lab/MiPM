@@ -3,6 +3,7 @@ from sklearn.base import BaseEstimator
 import torch
 import torch.nn as nn
 import math
+import torch.nn.functional as F
 
 
 class gtnet(nn.Module, BaseEstimator):
@@ -37,8 +38,7 @@ class gtnet(nn.Module, BaseEstimator):
 
         self.skip_channels = 32
         self.end_channels = 64
-
-        self.filter_convs = nn.ModuleList()
+        self.skip_convs = nn.ModuleList()
         self.gate_convs = nn.ModuleList()
         self.gconv1 = nn.ModuleList()
         self.gconv2 = nn.ModuleList()
@@ -61,11 +61,16 @@ class gtnet(nn.Module, BaseEstimator):
             # padding=0
             rf_size_j = int(
                 1 + (kernel_size-1)*(self.dilation_exponential**j-1))
-            self.filter_convs.append(dilated_1D(
-                self.residual_channels, self.conv_channels, dilation_factor=new_dilation))
             self.gate_convs.append(dilated_1D(
                 self.residual_channels, self.conv_channels, dilation_factor=new_dilation))
-
+            if self.seq_length > self.receptive_field:
+                self.skip_convs.append(nn.Conv2d(in_channels=self.conv_channels,
+                                                 out_channels=self.skip_channels,
+                                                 kernel_size=(1, self.seq_length-rf_size_j+1)))
+            else:
+                self.skip_convs.append(nn.Conv2d(in_channels=self.conv_channels,
+                                                 out_channels=self.skip_channels,
+                                                 kernel_size=(1, self.receptive_field-rf_size_j+1)))
             self.gconv1.append(
                 mixprop(self.conv_channels, self.residual_channels, self.gcn_depth, self.dropout, self.propalpha))
             self.gconv2.append(
@@ -117,12 +122,14 @@ class gtnet(nn.Module, BaseEstimator):
         for i in range(self.layers):
             residual = x
             # TC Module
-            filter = self.filter_convs[i](x)
-            filter = torch.tanh(filter)
             gate = self.gate_convs[i](x)
             gate = torch.sigmoid(gate)
-            x = filter * gate
+            x = gate
             x = F.dropout(x, self.dropout, training=self.training)
+            # Skip Connection
+            s = x
+            s = self.skip_convs[i](s)
+            skip = s + skip
             # GC Module
             x = self.gconv1[i](x, adp)+self.gconv2[i](x,
                                                       adp.transpose(1, 0))

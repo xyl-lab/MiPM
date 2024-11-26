@@ -1,1 +1,57 @@
-Fri 19 Apr 2024 19:55:03 model_training.py INFO cuurent parameters index: 0
+Tue 26 Nov 2024 16:52:02 run.py INFO best params: propalpha: 0.3, leaky_rate:0.1, dropout: 0.2
+Tue 26 Nov 2024 16:52:02 run.py INFO gtnet(
+  (skip_convs): ModuleList(
+    (0): Conv2d(64, 32, kernel_size=(1, 58), stride=(1, 1))
+    (1): Conv2d(64, 32, kernel_size=(1, 46), stride=(1, 1))
+    (2): Conv2d(64, 32, kernel_size=(1, 22), stride=(1, 1))
+  )
+  (gate_convs): ModuleList(
+    (0): dilated_1D(
+      (tconv): Conv2d(64, 64, kernel_size=(1, 7), stride=(1, 1))
+    )
+    (1): dilated_1D(
+      (tconv): Conv2d(64, 64, kernel_size=(1, 7), stride=(1, 1), dilation=(1, 2))
+    )
+    (2): dilated_1D(
+      (tconv): Conv2d(64, 64, kernel_size=(1, 7), stride=(1, 1), dilation=(1, 4))
+    )
+  )
+  (gconv1): ModuleList(
+    (0-2): 3 x mixprop(
+      (nconv): nconv()
+      (mlp): linear(
+        (mlp): Conv2d(192, 64, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (gconv2): ModuleList(
+    (0-2): 3 x mixprop(
+      (nconv): nconv()
+      (mlp): linear(
+        (mlp): Conv2d(192, 64, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (norm): ModuleList(
+    (0): LayerNorm((64, 45, 58), eps=1e-05, elementwise_affine=False)
+    (1): LayerNorm((64, 45, 46), eps=1e-05, elementwise_affine=False)
+    (2): LayerNorm((64, 45, 22), eps=1e-05, elementwise_affine=False)
+  )
+  (start_conv): Conv2d(1, 64, kernel_size=(1, 1), stride=(1, 1))
+  (latentcorrelationlayer): LatentCorrelationLayer(
+    (GRU): GRU(64, 45)
+    (GrapAttentionLayer): GraphAttentionLayer(
+      (w_ks): Linear(in_features=45, out_features=45, bias=True)
+      (w_qs): Linear(in_features=45, out_features=45, bias=True)
+      (leakyrelu): LeakyReLU(negative_slope=0.1)
+      (dropout): Dropout(p=0.3, inplace=False)
+    )
+  )
+  (end_conv_1): Conv2d(32, 64, kernel_size=(1, 1), stride=(1, 1))
+  (end_conv_2): Conv2d(64, 1, kernel_size=(1, 1), stride=(1, 1))
+  (skip0): Conv2d(1, 32, kernel_size=(1, 64), stride=(1, 1))
+  (skipE): Conv2d(64, 32, kernel_size=(1, 22), stride=(1, 1))
+)
+Tue 26 Nov 2024 16:52:02 run.py INFO Window = 64
+Tue 26 Nov 2024 16:52:02 run.py INFO Horizon = 1
+Tue 26 Nov 2024 16:52:20 run.py INFO | end of epoch   0 | time: 18.08s | train_loss 0.8342 | val_loss 0.7809

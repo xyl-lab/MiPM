@@ -11,11 +11,11 @@ import warnings
 from sklearn.model_selection import GridSearchCV
 
 
-def Data_Pre(window=64, batch_size=128, horizon=1):
+def Data_Pre(window=64, batch_size=128, horizon=1, dpath='./Dataset/stress.csv', tpath='./Dataset/targets.csv'):
 
-    x_data = pd.read_csv('./Dataset/stress.csv',
+    x_data = pd.read_csv(dpath,
                          index_col='collect_time', parse_dates=['collect_time'])
-    y_data = pd.read_csv('./Dataset/targets.csv',
+    y_data = pd.read_csv(tpath,
                          index_col='collect_time', parse_dates=['collect_time'])
     # 扩大倍数
     # y_data.iloc[:, :3] *= 1000
@@ -107,12 +107,12 @@ def Data_Pre(window=64, batch_size=128, horizon=1):
     return scaler_cols, scaler_target, X_train, y_train, X_test, y_test
 
 
-def Training_Loader(X_train_folds, y_train_folds, X_test_fold, y_test_fold, batch_size=128):
-    X_train = X_train_folds[:, :, :38]
-    y_his_train = X_train_folds[:, :, 38:]
+def Training_Loader(X_train_folds, y_train_folds, X_test_fold, y_test_fold, batch_size=32, dsize=38):
+    X_train = X_train_folds[:, :, :dsize]
+    y_his_train = X_train_folds[:, :, dsize:]
 
-    X_test = X_test_fold[:, :, :38]
-    y_his_test = X_test_fold[:, :, 38:]
+    X_test = X_test_fold[:, :, :dsize]
+    y_his_test = X_test_fold[:, :, dsize:]
     train_loader = DataLoader(TensorDataset(
         X_train, y_his_train, y_train_folds), shuffle=True, batch_size=batch_size)
     val_loader = DataLoader(TensorDataset(
@@ -120,9 +120,9 @@ def Training_Loader(X_train_folds, y_train_folds, X_test_fold, y_test_fold, batc
     return train_loader, val_loader
 
 
-def Testing_Loader(X, y, batch_size=128):
-    X_test = X[:, :, :38]
-    y_his_test = X[:, :, 38:]
+def Testing_Loader(X, y, batch_size=32, dsize=38):
+    X_test = X[:, :, :dsize]
+    y_his_test = X[:, :, dsize:]
     test_loader = DataLoader(TensorDataset(
         X_test, y_his_test, y), batch_size=batch_size)
     return test_loader
