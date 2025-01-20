@@ -1,27 +1,27 @@
 
-# 源码文件目录说明
-* **Dataset**：保存底部结构应力数据以及沉井下沉姿态数据，主要包括两个csv文件，`stress.csv`保存底部结构应力数据、`targets.csv`保存沉井下沉姿态数据
-* **logfiles**：保存MiPM模型四折交叉验证的调参过程
-* **Modelpkl**：保存训练好的基线模型，包括`LR`、`LSTM`、`XGBoost`，以便用于计算模型对测试集的预测精度
-* **networks**：保存MiPM模型结构以及LSTM模型结构的相关文件，其中`net.py`以及`layer.py`保存MiPM模型结构，`LSTMModel.py`保存LSTM模型结构
-* **pictures**：保存`README`文件中所使用到的图片
-* **Tools**：保存数据预处理以及模型训练调参过程的相关文件
-* **Baseline.ipynb**：基线模型`LR`、`LSTM`、`XGBoost`、`RF`的参数调优过程
-# 背景
+# Source code file directory description
+* **Dataset**：Save the datasets collected during the three phases of the Zhang Jinggao open caisson sinking: Phase1, Phase2, and Phase3. Each dataset contains two csv files, namely the bottom structure stress data `stress.csv` and the caisson sinking attitude data `targets.csv`. Also contains the SML2010 dataset `sml2010.csv`
+* **logfiles**：Save the parameter adjustment process of the MiPM model four-fold cross validation
+* **networks**：Save the MiPM model structure and the related files of the LSTM model structure, where `net.py` and `layer.py` save the MiPM model structure, and `LSTMModel.py` saves the LSTM model structure
+* **pictures**：Save the images used in the `README` file
+* **Tools**：Save the relevant files of data preprocessing and model training and parameter adjustment process
+* * **MiPM.pt**: This file saves the trained model parameters.
+* **Baseline.ipynb**：Parameter tuning process of the baseline model
+# Background
 
-沉井作为基础结构，在桥梁建造中，被广泛应用。在沉井建造过程中，实时准确的下沉姿态预测，有助于降低事故风险，提高工程质量。然而，常用的预测模型，如统计模型、机器学习模型，无法处理时序数据中的非线性时空特性，如结构应力，不适用于沉井下沉姿态的预测。另外，现有的针对沉井下沉姿态预测进行的工作，无法同时对沉井多个姿态指标进行预测。因此，本文提出了多指标预测模型MiPM。对沉井的姿态指标：下沉量、横/纵向倾斜度、横/纵向顶口偏位、横/纵向底口偏位，共七个指标进行预测。在沉井下沉过程中，沉井姿态的变化导致底部结构应力的变化，本文使用结构应力作为辅助数据，提高模型的预测精度。
-## 七个沉井姿态指标介绍
-如沉井横向位置图所示，沉井四周布置四个传感器，分别收集该点位的三维坐标$x,y,z$，依据沉井规格的设定，计算沉井的七个姿态指标
+As a basic structure, open caissons are widely used in bridge construction. During the open caisson construction process, real-time and accurate prediction of the sinking attitude can help reduce the risk of accidents and improve the quality of the project. However, commonly used prediction models, such as statistical models and machine learning models, cannot handle the nonlinear spatio-temporal characteristics in time series data, such as structural stress, and are not suitable for the prediction of the open caisson's sinking attitude. In addition, the existing work on the prediction of the open caisson's sinking attitude cannot predict multiple open caisson attitude indicators at the same time. Therefore, this paper proposes a multi-indicator prediction model `MiPM`. The open caisson's attitude indicators: sinking depth, horizontal/vertical inclination, horizontal/vertical top opening deviation, horizontal/vertical bottom opening deviation, a total of seven indicators are predicted. During the open caisson's sinking process, changes in the open caisson's attitude lead to changes in the bottom structural stress. This paper uses structural stress as auxiliary data to improve the prediction accuracy of the model.
+## Introduction to seven open caisson attitude indicators
+As shown in the horizontal position diagram of the open caisson, four sensors are arranged around the open caisson to collect the three-dimensional coordinates $x, y, z$ of the point respectively, and calculate the seven attitude indicators of the open caisson according to the setting of the open caisson specifications: 
 
-* **下沉量**：沉井顶口中心点的下沉量，如沉井横向位置图中，沉井中心点的三维坐标为四侧三维坐标的均值，沉井下沉量即是指一段时间内的$z$的下沉高度。
+* **Sinking depth**：The sinking depth of the center point of the top of the open caisson. For example, in the horizontal position diagram of the caisson, the three-dimensional coordinates of the center point of the open caisson are the average of the three-dimensional coordinates of the four sides. The sinking depth of the open caisson refers to the sinking height of $z$ within a period of time.。
 
-* **横向倾斜度**：横向代表上游和下游的方向，当沉井偏向下游时，横向倾斜度为正。如沉井横向位置图中，当沉井在上下游轴线上的倾斜，定义为横向倾斜度
+* **Horizontal inclination**：The horizontal direction represents the upstream and downstream directions. When the open caisson is tilted toward the downstream, the horizontal inclination is positive. As shown in the horizontal position diagram of the open caisson, when the open caisson is tilted on the upstream and downstream axis, it is defined as the horizontal inclination.
 
-* **纵向倾斜度**：纵向代表如皋和张家港的方向，当沉井偏向张家港时，纵向倾斜度为正。如沉井纵向位置图中，当沉井在张家港和如皋轴线上的倾斜，定义为纵向倾斜度
+* **Vertical inclination**：The vertical direction represents the direction of Rugao and Zhangjiagang. When the open caisson is tilted toward Zhangjiagang, the vertical inclination is positive. As shown in the vertical position diagram of the open caisson, when the open caisson is tilted on the axis of Zhangjiagang and Rugao, the vertical inclination is defined as.
 
-* **底口偏位（横向、纵向）**：代表沉井底口中心点的实时位置与预设中心点位置的横纵向偏差。如沉井底口位置图所示，白色虚线框及其轴心是预定义的中心位置，黄色实线框及其轴心是实际沉井的位置，轴心之间横纵方向的偏差沉井的底口偏位
+* **Bottom deviation(Horizontal, vertical)**：The bottom opening deviation represents the horizontal and vertical deviation between the real-time position of the center point of the bottom opening of the open caisson and the preset center point position. As shown in the open caisson bottom opening position diagram, the white dotted line frame and its axis are the predefined center open position, the yellow solid line frame and its axis are the actual caisson position, and the horizontal and vertical deviations between the axes are the bottom opening deviation of the open caisson.
 
-* **顶口偏位（横向、纵向）**：代表沉井顶口中心点的实时位置与预设中心点位置的横纵向偏差。依据底口偏位，顶口偏位同理
+* **Top deviation(Horizontal, vertical)**：The top opening deviation refers to the horizontal and vertical deviation between the real-time position of the center point of the top opening of the open caisson and the preset center point position.
 
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/TBclination.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">沉井横向位置图</div> </center>
 
@@ -30,75 +30,63 @@
 <center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/bottom_offset.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">沉井底口位置图</div> </center>
 
 # MiPM
-## 模型结构
+## Model architecture
 
-基于卷积神经网络以及图神经网络建立深度学习模型，提取沉井下沉姿态数据以及结构应力之间的时空特征，预测沉井的下沉姿态。该模型主要分为图学习层、时间卷积模块、图卷积模块、输入输出模块。
+A deep learning model is established based on convolutional neural networks and graph neural networks to extract the spatio-temporal characteristics between the sinking attitude data of the open caisson and the structural stress, and predict the sinking attitude of the open caisson. The model is mainly divided into a graph learning layer, a time convolution module, a graph convolution module, and an input-output module.
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/model_architecture.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">模型的总体架构图</div> </center>
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/model_architecture.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">Architecture of MiPM</div> </center>
 
 
 
-图卷积神经网络需要图邻接矩阵，本文使用GRU以及自注意力机制动态建立沉井下沉姿态以及结构应力之间的图邻接矩阵，提高模型的预测精度
+Graph convolutional neural networks require a graph adjacency matrix. This paper uses GRU and self-attention mechanism to dynamically establish the graph adjacency matrix between the sinking atttitude and structural stress of the open caisson to improve the prediction accuracy of the model.
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/graph_learning.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图学习层架构图</div> </center>
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/graph_learning.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">Graph learning layer architecture diagram</div> </center>
 
-沉井下沉过程中，沉井的姿态以及底部结构应力都是随时间变化，上一时刻的值影响下一时刻，本文使用1D扩展卷积层捕获多元时序数据的时间特征，学习沉井下沉姿态以及结构应力的时间关系
+During the sinking process of the open caisson, the attitude of the open caisson and the stress of the bottom structure change with time. The value of the previous moment affects the next moment. This paper uses a 1D extended convolutional layer to capture the temporal characteristics of multivariate time series data and learn the temporal relationship between the sinking attitude of the open caisson and the structural stress.
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/tcmodule.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">时间卷积模块架构图</div> </center>
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/tcmodule.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">Temporal convolution module architecture diagram</div> </center>
 
-在沉井下沉过程中，沉井姿态的变化会导致沉井底部结构应力的变化，且沉井底部不同位置都布置了结构应力点位，不同点位之间也是相互影响的。本文使用图神经网络来提取多元时序数据之间的空间特征。
+During the sinking process of the open caisson, the change of the open caisson attitude will lead to the change of the structural stress at the bottom of the open caisson, and structural stress points are arranged at different positions at the bottom of the open caisson, and different points also affect each other. This paper uses graph neural networks to extract spatial features between multivariate time series data.
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/mix-pop.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">图卷积模块架构图</div> </center>
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/mix-pop.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">Graph convolution module architecture diagram</div> </center>
 
-## 模型训练与预测过程
+## Model training and prediction process
 
-首先，用伪代码说明模型的训练与预测过程，如算法1。算法1主要包括三个部分，数据重构、模型训练、以及模型预测。其中，数据重构是指以滑动窗口的方式对原始数据进行重构；模型训练是指以训练集进行模型调参，得到训练好的模型；模型预测是指以测试集计算模型的预测精度。除此以外，为了使算法1更加清晰，利用可视化的方式进一步对模型的训练和预测过程进行说明，如下图。
+First, the model training and prediction process is explained with pseudo code, such as Algorithm 1. Algorithm 1 mainly includes three parts: data reconstruction, model training, and model prediction. Among them, data reconstruction refers to the reconstruction of the original data in a sliding window manner; model training refers to adjusting the model parameters with the training set to obtain a trained model; model prediction refers to calculating the prediction accuracy of the model with the test set. In addition, in order to make Algorithm 1 clearer, the model training and prediction process is further explained in a visual way, as shown in the figure below. 
 
-**算法1：** 模型训练与预测过程
+**Algorithm1：** Model training and prediction process
 
-**输入：** 结构应力序列***XX***，沉井下沉姿态序列***YY***，时间窗口大小*J*，MiPM模型超参数*params*，模型训练次数*epoches*，模型学习率*lr*，batch的大小*B*
+**Input：** Structural stress series ***XX***, open caisson sinking attitude series ***YY***, time window size *J*, MiPM model hyperparameters *params*, model training times *epoches*, model learning rate *lr*, batch size *B*
 
-**输出：** 沉井下沉姿态单步预测精度$RMSE,\ MAPE,\ R^2$
+**Output：** Single-step prediction accuracy of open caisson sinking attitude $RMSE,\MAPE,\R^2$
 
-1. 根据时间窗口大小*J*对***XX***、***YY***进行数据重构，得到*Dataset*，划分*Dataset*，得到*trainSet*,*valSet*,*testSet*
+1. According to the time window size *J*, reconstruct the data of ***XX*** and ***YY*** to obtain *Dataset*, divide *Dataset* to obtain *trainSet*, *valSet*, *testSet*
 
-   //模型训练过程
+   //Model training process
 
-2. $model \leftarrow MiPM.init(params)$ //根据*params*初始化 MiPM 模型，得到 *model*
+2. $model \leftarrow MiPM.init(params)$ //Initialize the MiPM model according to *params* and get *model*
 
 3. $for\ epoch\ in\ range(l,\ epochs+1):$
 
 4. &emsp; $for\ input, \ target\ in\ trainSet:$
-5. &emsp;&emsp; $pred = model.forward(input)$ //前向传播，计算沉井下沉姿态预测值$pred$       
-6. &emsp;&emsp; $loss = MSELoss(pred, target)$ //根据姿态预测值$pred$以及姿态实测值$target$计算$MSE$损失$loss$                      
-7. &emsp;&emsp; $gradients = model.backward(loss)$ //反向传播，计算梯度                        
-8. &emsp;&emsp; $model.updateParameters(gradients, lr)$ //根据模型学习率*lr*，更新模型参数               
+5. &emsp;&emsp; $pred = model.forward(input)$ //Forward propagation, calculate the predicted value of the sinking attitude of the open caisson $pred$   
+6. &emsp;&emsp; $loss = MSELoss(pred, target)$ //Calculate the $MSE$ loss $loss$ based on the attitude prediction value $pred$ and the attitude measured value $target$                     
+7. &emsp;&emsp; $gradients = model.backward(loss)$ //Back propagation, calculating gradients                     
+8. &emsp;&emsp; $model.updateParameters(gradients, lr)$ //Update model parameters according to model learning rate *lr*              
 9. &emsp; $end\ for$
 10. $end\ for$
 11. $for\ input, \ target\ in\ testSet:$
-12. &emsp; $pred = model.forward(input)$ //前向传播，计算沉井下沉姿态预测值$pred$       
-13. &emsp; $preds.add(pred), targets.add(target)$ //保存沉井下沉姿态预测值及其对应的实测值
+12. &emsp; $pred = model.forward(input)$ //Forward propagation, calculate the predicted value of the sinking attitude of the open caisson $pred$      
+13. &emsp; $preds.add(pred), targets.add(target)$ //Save the predicted value of the sinking attitude of the open caisson and its corresponding measured value
 14. $end\ for$
-15. $return\ metric(preds,\ targets)$ //计算模型的预测精度$RMSE,\ MAPE,\ R^2$，并返回
+15. $return\ metric(preds,\ targets)$ //Calculate the prediction accuracy of the model $RMSE,\MAPE,\R^2$ and return
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/Data_reconstruction.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">模型训练与预测可视化</div> </center>
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/Data_reconstruction.png">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">Model training and prediction visualization</div> </center>
 
 
-# 基线模型参数设置
+# Baseline model parameter settings
 
-针对以下基线模型，本文根据参考文献的原模型网络结构以及本文的数据集，进行调参，给出参数的选择范围以及设置结果。
-## RM
-
-* 参数选取范围：n_estimator:[100, 200, 300, 400, ..., 2000], max_depth:[1, 2, 3, ..., 10], min_samples_leaf: [1, 2, 3, ..., 10]
-* 参数设置：n_estimator: 600, max_depth: 10, min_samples_leaf: 1
-
-## XGBoost
-
-* 参数选取范围：n_estimator:[100, 200, 300, 400, ..., 2000], max_depth:[1, 2, 3, ..., 10]
-* 参数设置：n_estimator: 1200, max_depth: 6
-## LSTM
-
-* 为了简单起见，本文将LSTM网络的循环次数设置为1
+For the following baseline models, this paper adjusts the parameters according to the original model network structure of the reference and the data set of this paper, and gives the parameter selection range and setting results.
 ## DARNN
 
 * @article{qin2017dual,
@@ -108,8 +96,8 @@
     year={2017}
   }
 * https://github.com/sunfanyunn/DARNN
-* 参数选取范围：hidden_size：[16, 32, 64, 128], dropout: [0.1, 0.2, 0.3, 0.4]
-* 参数设置: hidden_size:128, dropout: 0.1
+* Parameter selection range：hidden_size：[16, 32, 64, 128], dropout: [0.1, 0.2, 0.3, 0.4]
+* Parameter setting: hidden_size:128, dropout: 0.1
 
 ## LSTNet
 
@@ -121,8 +109,8 @@
     year={2018}
   }
 * https://github.com/laiguokun/LSTNet
-* 参数选取范围：hidden_size: [16, 32, 64, 128], d_model: [80, 120, 160], filter_size: [4, 6, 9], dropout: [0.1, 0.2, 0.3, 0.4], highway_window: [8, 16, 32]
-* 参数设置: hidden_size: 64, d_model: 160, filter_size: 4, dropout: 0.30000000000000004, highway_window: 16
+* Parameter selection range：hidden_size: [16, 32, 64, 128], d_model: [80, 120, 160], filter_size: [4, 6, 9], dropout: [0.1, 0.2, 0.3, 0.4], highway_window: [8, 16, 32]
+* Parameter setting: hidden_size: 64, d_model: 160, filter_size: 4, dropout: 0.30000000000000004, highway_window: 16
 
 ## STGNN
 
@@ -134,22 +122,8 @@
     year={2020}
   }
 * https://github.com/LMissher/STGNN
-* 参数选取范围：d_k：[20, 30, 40], num_leayers: [1, 2, 3, 4]
-* 参数设置: d_k:20, num_layers: 1
-## WaveForM
-
-* @inproceedings{yang2023waveform,
-  title={WaveForM: Graph enhanced wavelet learning for long sequence forecasting of multivariate time series},
-  author={Yang, Fuhao and Li, Xin and Wang, Min and Zang, Hongyu and Pang, Wei and Wang, Mingzhong},
-  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
-  volume={37},
-  number={9},
-  pages={10754--10761},
-  year={2023}
-  }
-* https://github.com/alanyoungCN/WaveForM
-* 参数选取范围: dropout: [0.1, 0.2, 0.3, 0.4], subgraph_size: [1, 2, 3, 4, 5, 6] , node_dim: [20, 30, 40], n_gnn_kayer: [1, 2, 3, 4]
-* 参数设置：dropout: 0.3, subgraph_size: 6, node_dim: 40, n_gnn_layer: 3
+* Parameter selection range：d_k：[20, 30, 40], num_leayers: [1, 2, 3, 4]
+* Parameter setting: d_k:20, num_layers: 1
 ## MSGNet
 
 * @inproceedings{cai2024msgnet,
@@ -162,8 +136,8 @@
   year={2024}
   }
 * https://github.com/YoZhibo/MSGNet
-* 参数选取范围：top_k: [1, 2, 3, 4, 5], gcn_depth: [1, 2, 3, 4], propalpha: [0.1, 0.2, 0.3, 0.4], node_dim: [10, 20, 30, 40], d_model: [80, 120, 160], dropout: [0.1, 0.2, 0.3, 0.4]
-* 参数设置：top_k: 5, gcn_depth: 1, propalpha: 0.4, node_dim: 30, d_model: 160, dropout: 0.1,  
+* Parameter selection range：top_k: [1, 2, 3, 4, 5], gcn_depth: [1, 2, 3, 4], propalpha: [0.1, 0.2, 0.3, 0.4], node_dim: [10, 20, 30, 40], d_model: [80, 120, 160], dropout: [0.1, 0.2, 0.3, 0.4]
+* Parameter setting：top_k: 5, gcn_depth: 1, propalpha: 0.4, node_dim: 30, d_model: 160, dropout: 0.1,  
 ## FourierGNN
 
 * @article{yi2024fouriergnn,
@@ -174,8 +148,8 @@
   year={2024}
   }
 * https://github.com/aikunyi/FourierGNN
-* 参数选取范围：embedding_size: [32, 64, 128, 256, 512], hidden_size: [16, 32, 64, 128]
-* 参数设置：embedding_size: 32, hidden_size: 128 
+* Parameter selection range：embedding_size: [32, 64, 128, 256, 512], hidden_size: [16, 32, 64, 128]
+* Parameter setting：embedding_size: 32, hidden_size: 128 
 ## MTGNN
 
 * @inproceedings{wu2020connecting,
@@ -186,8 +160,8 @@
     year={2020}
   }
 * https://github.com/nnzhan/MTGNN
-* 参数选取范围：layers: [1, 2, 3, 4], propalpha: [0.1, 0.2, 0.3, 0.4], subgraph_size: [2, 3, 4], out_channels: [16, 32, 64, 128], gcn_depth: [1, 2, 3, 4]
-* 参数设置: layers: 3, propalpha: 0.2, subgraph_size: 2, out_channels:64, gcn_depth:2
+* Parameter selection range：layers: [1, 2, 3, 4], propalpha: [0.1, 0.2, 0.3, 0.4], subgraph_size: [2, 3, 4], out_channels: [16, 32, 64, 128], gcn_depth: [1, 2, 3, 4]
+* Parameter setting: layers: 3, propalpha: 0.2, subgraph_size: 2, out_channels:64, gcn_depth:2
 
 ## Informer
 
@@ -201,8 +175,8 @@
     year={2021}
   }
 * https://github.com/zhouhaoyi/Informer2020
-* 参数选取范围：factor: [3, 4, 5], d_k: [20, 30, 40], dropout: [0.1, 0.2, 0.3, 0.4]
-* 参数设置: factor: 4, d_k:40, dropout: 0.1
+* Parameter selection range：factor: [3, 4, 5], d_k: [20, 30, 40], dropout: [0.1, 0.2, 0.3, 0.4]
+* Parameter setting: factor: 4, d_k:40, dropout: 0.1
 
 ## FEDformer
 
@@ -215,19 +189,19 @@
     organization={PMLR}
   }
 * https://github.com/MAZiqing/FEDformer
-* 参数选取范围：d_k: [20, 30, 40], dropout: [0.1, 0.2, 0.3, 0.4]
-* 参数设置: d_k:40, dropout: 0.1
-# 实验环境
-* 服务器硬件配置：操作系统是Ubuntu 18.04.6 LTS、显卡型号是RTX A5000 GPU、CPU型号是Intel Xeon Gold 6230R CPU。
-* 软件环境：python3.9、pytorch2.10GPU
+* Parameter selection range：d_k: [20, 30, 40], dropout: [0.1, 0.2, 0.3, 0.4]
+* Parameter setting: d_k:40, dropout: 0.1
+# Experimental environment
+* Server hardware configuration: operating system is Ubuntu 18.04.6 LTS, graphics card model is RTX A5000 GPU, CPU model is Intel Xeon Gold 6230R CPU。
+* Software environment: python3.9, pytorch2.10GPU
 # Run code
 `Python run.py`
-# 实验结果
+# Experimental result
 
-本文各模型对沉井的七个姿态指标进行预测，并使用相关系数R2、均方根误差RMSE、平均绝对百分比误差MAPE，作为评价指标。各模型的预测结果如下表。
+Each model in this paper predicts seven attitude indicators of the open caisson, and uses the correlation coefficient R2, root mean square error RMSE, and mean absolute percentage error MAPE as evaluation indicators. In addition, to verify the generalization ability of the model, single-step prediction is also performed on the sml2010 dataset, and the prediction accuracy is compared. The prediction results of each model on each dataset are shown in the following table.
 
-<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/study_results.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">各模型的预测结果</div> </center>
-
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/reona.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">Prediction results of each model on the open caisson attitude dataset</div> </center>
+<center>    <img style="border-radius: 0.3125em;    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="./pictures/reonsml.jpg">    <br>    <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">Prediction results of each model on the sml2010 dataset</div> </center>
 
 
 

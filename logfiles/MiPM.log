@@ -1,5 +1,5 @@
-Tue 26 Nov 2024 16:52:02 run.py INFO best params: propalpha: 0.3, leaky_rate:0.1, dropout: 0.2
-Tue 26 Nov 2024 16:52:02 run.py INFO gtnet(
+Mon 13 Jan 2025 17:38:51 run.py INFO best params: propalpha: 0.3, leaky_rate:0.1, dropout: 0.2
+Mon 13 Jan 2025 17:38:51 run.py INFO gtnet(
   (skip_convs): ModuleList(
     (0): Conv2d(64, 32, kernel_size=(1, 58), stride=(1, 1))
     (1): Conv2d(64, 32, kernel_size=(1, 46), stride=(1, 1))
@@ -33,16 +33,16 @@ Tue 26 Nov 2024 16:52:02 run.py INFO gtnet(
     )
   )
   (norm): ModuleList(
-    (0): LayerNorm((64, 45, 58), eps=1e-05, elementwise_affine=False)
-    (1): LayerNorm((64, 45, 46), eps=1e-05, elementwise_affine=False)
-    (2): LayerNorm((64, 45, 22), eps=1e-05, elementwise_affine=False)
+    (0): LayerNorm((64, 14, 58), eps=1e-05, elementwise_affine=False)
+    (1): LayerNorm((64, 14, 46), eps=1e-05, elementwise_affine=False)
+    (2): LayerNorm((64, 14, 22), eps=1e-05, elementwise_affine=False)
   )
   (start_conv): Conv2d(1, 64, kernel_size=(1, 1), stride=(1, 1))
   (latentcorrelationlayer): LatentCorrelationLayer(
-    (GRU): GRU(64, 45)
+    (GRU): GRU(64, 14)
     (GrapAttentionLayer): GraphAttentionLayer(
-      (w_ks): Linear(in_features=45, out_features=45, bias=True)
-      (w_qs): Linear(in_features=45, out_features=45, bias=True)
+      (w_ks): Linear(in_features=14, out_features=14, bias=True)
+      (w_qs): Linear(in_features=14, out_features=14, bias=True)
       (leakyrelu): LeakyReLU(negative_slope=0.1)
       (dropout): Dropout(p=0.3, inplace=False)
     )
@@ -52,6 +52,110 @@ Tue 26 Nov 2024 16:52:02 run.py INFO gtnet(
   (skip0): Conv2d(1, 32, kernel_size=(1, 64), stride=(1, 1))
   (skipE): Conv2d(64, 32, kernel_size=(1, 22), stride=(1, 1))
 )
-Tue 26 Nov 2024 16:52:02 run.py INFO Window = 64
-Tue 26 Nov 2024 16:52:02 run.py INFO Horizon = 1
-Tue 26 Nov 2024 16:52:20 run.py INFO | end of epoch   0 | time: 18.08s | train_loss 0.8342 | val_loss 0.7809
+Mon 13 Jan 2025 17:38:51 run.py INFO Window = 64
+Mon 13 Jan 2025 17:38:51 run.py INFO Horizon = 1
+Mon 13 Jan 2025 17:38:56 run.py INFO | end of epoch   0 | time:  5.19s | train_loss 0.8944 | val_loss 0.7964
+Mon 13 Jan 2025 17:39:00 run.py INFO | end of epoch   1 | time:  4.70s | train_loss 0.7698 | val_loss 0.7888
+Mon 13 Jan 2025 17:39:05 run.py INFO | end of epoch   2 | time:  4.81s | train_loss 0.7206 | val_loss 0.7505
+Mon 13 Jan 2025 17:39:10 run.py INFO | end of epoch   3 | time:  5.16s | train_loss 0.6972 | val_loss 0.7220
+Mon 13 Jan 2025 17:39:16 run.py INFO | end of epoch   4 | time:  5.39s | train_loss 0.6942 | val_loss 0.7300
+Mon 13 Jan 2025 17:39:21 run.py INFO | end of epoch   5 | time:  5.25s | train_loss 0.6804 | val_loss 0.7367
+Mon 13 Jan 2025 17:39:26 run.py INFO | end of epoch   6 | time:  5.08s | train_loss 0.6759 | val_loss 0.7276
+Mon 13 Jan 2025 17:39:31 run.py INFO | end of epoch   7 | time:  5.22s | train_loss 0.6727 | val_loss 0.7296
+Mon 13 Jan 2025 17:39:43 run.py INFO | end of epoch   8 | time: 11.27s | train_loss 0.6835 | val_loss 0.7038
+Mon 13 Jan 2025 17:39:55 run.py INFO | end of epoch   9 | time: 12.00s | train_loss 0.6653 | val_loss 0.7089
+Mon 13 Jan 2025 17:40:07 run.py INFO | end of epoch  10 | time: 11.92s | train_loss 0.6688 | val_loss 0.7065
+Mon 13 Jan 2025 17:40:19 run.py INFO | end of epoch  11 | time: 11.97s | train_loss 0.6548 | val_loss 0.6903
+Mon 13 Jan 2025 17:40:34 run.py INFO | end of epoch  12 | time: 15.66s | train_loss 0.6557 | val_loss 0.7007
+Mon 13 Jan 2025 17:40:52 run.py INFO | end of epoch  13 | time: 18.27s | train_loss 0.6484 | val_loss 0.6974
+Mon 13 Jan 2025 17:41:10 run.py INFO | end of epoch  14 | time: 17.84s | train_loss 0.6491 | val_loss 0.6921
+Mon 13 Jan 2025 17:41:28 run.py INFO | end of epoch  15 | time: 17.84s | train_loss 0.6449 | val_loss 0.6832
+Mon 13 Jan 2025 17:41:46 run.py INFO | end of epoch  16 | time: 17.91s | train_loss 0.6466 | val_loss 0.6836
+Mon 13 Jan 2025 17:42:04 run.py INFO | end of epoch  17 | time: 17.95s | train_loss 0.6464 | val_loss 0.6944
+Mon 13 Jan 2025 17:42:22 run.py INFO | end of epoch  18 | time: 17.81s | train_loss 0.6428 | val_loss 0.6840
+Mon 13 Jan 2025 17:42:39 run.py INFO | end of epoch  19 | time: 17.55s | train_loss 0.6429 | val_loss 0.7109
+Mon 13 Jan 2025 17:42:57 run.py INFO | end of epoch  20 | time: 17.67s | train_loss 0.6475 | val_loss 0.6902
+Mon 13 Jan 2025 17:43:15 run.py INFO | end of epoch  21 | time: 18.05s | train_loss 0.6542 | val_loss 0.6875
+Mon 13 Jan 2025 17:43:33 run.py INFO | end of epoch  22 | time: 17.94s | train_loss 0.6378 | val_loss 0.6798
+Mon 13 Jan 2025 17:43:51 run.py INFO | end of epoch  23 | time: 17.75s | train_loss 0.6315 | val_loss 0.6833
+Mon 13 Jan 2025 17:44:08 run.py INFO | end of epoch  24 | time: 17.52s | train_loss 0.6360 | val_loss 0.7321
+Mon 13 Jan 2025 17:44:26 run.py INFO | end of epoch  25 | time: 18.00s | train_loss 0.6642 | val_loss 0.6842
+Mon 13 Jan 2025 17:44:44 run.py INFO | end of epoch  26 | time: 17.41s | train_loss 0.6332 | val_loss 0.6694
+Mon 13 Jan 2025 17:45:02 run.py INFO | end of epoch  27 | time: 17.89s | train_loss 0.6326 | val_loss 0.6703
+Mon 13 Jan 2025 17:45:19 run.py INFO | end of epoch  28 | time: 17.89s | train_loss 0.6266 | val_loss 0.6689
+Mon 13 Jan 2025 17:45:37 run.py INFO | end of epoch  29 | time: 17.59s | train_loss 0.6253 | val_loss 0.6770
+Mon 13 Jan 2025 17:45:55 run.py INFO | end of epoch  30 | time: 17.80s | train_loss 0.6233 | val_loss 0.6728
+Mon 13 Jan 2025 17:46:13 run.py INFO | end of epoch  31 | time: 17.84s | train_loss 0.6208 | val_loss 0.7185
+Mon 13 Jan 2025 17:46:31 run.py INFO | end of epoch  32 | time: 17.88s | train_loss 0.6347 | val_loss 0.7317
+Mon 13 Jan 2025 17:46:48 run.py INFO | end of epoch  33 | time: 17.72s | train_loss 0.6450 | val_loss 0.6746
+Mon 13 Jan 2025 17:47:06 run.py INFO | end of epoch  34 | time: 17.77s | train_loss 0.6123 | val_loss 0.7099
+Mon 13 Jan 2025 17:47:24 run.py INFO | end of epoch  35 | time: 17.80s | train_loss 0.6346 | val_loss 0.6633
+Mon 13 Jan 2025 17:47:41 run.py INFO | end of epoch  36 | time: 17.61s | train_loss 0.6226 | val_loss 0.6650
+Mon 13 Jan 2025 17:47:59 run.py INFO | end of epoch  37 | time: 17.59s | train_loss 0.6188 | val_loss 0.6680
+Mon 13 Jan 2025 17:48:16 run.py INFO | end of epoch  38 | time: 17.39s | train_loss 0.6216 | val_loss 0.6792
+Mon 13 Jan 2025 17:48:34 run.py INFO | end of epoch  39 | time: 17.77s | train_loss 0.6188 | val_loss 0.6827
+Mon 13 Jan 2025 17:48:52 run.py INFO | end of epoch  40 | time: 17.80s | train_loss 0.6132 | val_loss 0.6799
+Mon 13 Jan 2025 17:49:10 run.py INFO | end of epoch  41 | time: 17.75s | train_loss 0.6151 | val_loss 0.6913
+Mon 13 Jan 2025 17:49:27 run.py INFO | end of epoch  42 | time: 17.58s | train_loss 0.6202 | val_loss 0.7019
+Mon 13 Jan 2025 17:49:45 run.py INFO | end of epoch  43 | time: 17.80s | train_loss 0.6153 | val_loss 0.6736
+Mon 13 Jan 2025 17:50:03 run.py INFO | end of epoch  44 | time: 17.91s | train_loss 0.6088 | val_loss 0.6811
+Mon 13 Jan 2025 17:50:21 run.py INFO | end of epoch  45 | time: 17.75s | train_loss 0.6099 | val_loss 0.6693
+Mon 13 Jan 2025 17:50:39 run.py INFO | end of epoch  46 | time: 17.95s | train_loss 0.6279 | val_loss 0.6602
+Mon 13 Jan 2025 17:50:57 run.py INFO | end of epoch  47 | time: 17.92s | train_loss 0.6278 | val_loss 0.6741
+Mon 13 Jan 2025 17:51:14 run.py INFO | end of epoch  48 | time: 17.53s | train_loss 0.6238 | val_loss 0.6756
+Mon 13 Jan 2025 17:51:32 run.py INFO | end of epoch  49 | time: 18.14s | train_loss 0.6077 | val_loss 0.6602
+Mon 13 Jan 2025 17:51:50 run.py INFO | end of epoch  50 | time: 17.88s | train_loss 0.6143 | val_loss 0.6743
+Mon 13 Jan 2025 17:52:08 run.py INFO | end of epoch  51 | time: 17.62s | train_loss 0.6144 | val_loss 0.6554
+Mon 13 Jan 2025 17:52:26 run.py INFO | end of epoch  52 | time: 17.75s | train_loss 0.6255 | val_loss 0.7056
+Mon 13 Jan 2025 17:52:43 run.py INFO | end of epoch  53 | time: 17.91s | train_loss 0.6236 | val_loss 0.6592
+Mon 13 Jan 2025 17:53:01 run.py INFO | end of epoch  54 | time: 17.77s | train_loss 0.6245 | val_loss 0.7156
+Mon 13 Jan 2025 17:53:19 run.py INFO | end of epoch  55 | time: 17.97s | train_loss 0.6432 | val_loss 0.6492
+Mon 13 Jan 2025 17:53:37 run.py INFO | end of epoch  56 | time: 17.81s | train_loss 0.5978 | val_loss 0.6681
+Mon 13 Jan 2025 17:53:55 run.py INFO | end of epoch  57 | time: 17.75s | train_loss 0.6169 | val_loss 0.6580
+Mon 13 Jan 2025 17:54:13 run.py INFO | end of epoch  58 | time: 17.78s | train_loss 0.6118 | val_loss 0.6874
+Mon 13 Jan 2025 17:54:30 run.py INFO | end of epoch  59 | time: 17.55s | train_loss 0.6113 | val_loss 0.6796
+Mon 13 Jan 2025 17:54:48 run.py INFO | end of epoch  60 | time: 17.61s | train_loss 0.6321 | val_loss 0.6524
+Mon 13 Jan 2025 17:55:05 run.py INFO | end of epoch  61 | time: 17.67s | train_loss 0.6072 | val_loss 0.6478
+Mon 13 Jan 2025 17:55:23 run.py INFO | end of epoch  62 | time: 17.25s | train_loss 0.6096 | val_loss 0.6742
+Mon 13 Jan 2025 17:55:41 run.py INFO | end of epoch  63 | time: 18.03s | train_loss 0.6057 | val_loss 0.6450
+Mon 13 Jan 2025 17:55:58 run.py INFO | end of epoch  64 | time: 17.64s | train_loss 0.6106 | val_loss 0.6528
+Mon 13 Jan 2025 17:56:16 run.py INFO | end of epoch  65 | time: 17.58s | train_loss 0.6058 | val_loss 0.6832
+Mon 13 Jan 2025 17:56:34 run.py INFO | end of epoch  66 | time: 17.98s | train_loss 0.6039 | val_loss 0.6537
+Mon 13 Jan 2025 17:56:52 run.py INFO | end of epoch  67 | time: 17.64s | train_loss 0.6052 | val_loss 0.6500
+Mon 13 Jan 2025 17:57:10 run.py INFO | end of epoch  68 | time: 17.98s | train_loss 0.6016 | val_loss 0.6470
+Mon 13 Jan 2025 17:57:27 run.py INFO | end of epoch  69 | time: 17.66s | train_loss 0.6188 | val_loss 0.6535
+Mon 13 Jan 2025 17:57:45 run.py INFO | end of epoch  70 | time: 17.78s | train_loss 0.6097 | val_loss 0.6525
+Mon 13 Jan 2025 17:58:03 run.py INFO | end of epoch  71 | time: 17.70s | train_loss 0.6118 | val_loss 0.6518
+Mon 13 Jan 2025 17:58:20 run.py INFO | end of epoch  72 | time: 17.62s | train_loss 0.6038 | val_loss 0.6688
+Mon 13 Jan 2025 17:58:39 run.py INFO | end of epoch  73 | time: 18.22s | train_loss 0.6141 | val_loss 0.6401
+Mon 13 Jan 2025 17:58:56 run.py INFO | end of epoch  74 | time: 17.55s | train_loss 0.6024 | val_loss 0.6495
+Mon 13 Jan 2025 17:59:14 run.py INFO | end of epoch  75 | time: 17.61s | train_loss 0.5944 | val_loss 0.6876
+Mon 13 Jan 2025 17:59:31 run.py INFO | end of epoch  76 | time: 17.59s | train_loss 0.6111 | val_loss 0.6642
+Mon 13 Jan 2025 17:59:49 run.py INFO | end of epoch  77 | time: 17.62s | train_loss 0.6085 | val_loss 0.6825
+Mon 13 Jan 2025 18:00:07 run.py INFO | end of epoch  78 | time: 17.89s | train_loss 0.6170 | val_loss 0.6506
+Mon 13 Jan 2025 18:00:25 run.py INFO | end of epoch  79 | time: 17.75s | train_loss 0.6082 | val_loss 0.6403
+Mon 13 Jan 2025 18:00:42 run.py INFO | end of epoch  80 | time: 17.64s | train_loss 0.5988 | val_loss 0.6512
+Mon 13 Jan 2025 18:01:00 run.py INFO | end of epoch  81 | time: 17.80s | train_loss 0.5991 | val_loss 0.6372
+Mon 13 Jan 2025 18:01:18 run.py INFO | end of epoch  82 | time: 17.84s | train_loss 0.6012 | val_loss 0.6419
+Mon 13 Jan 2025 18:01:36 run.py INFO | end of epoch  83 | time: 17.88s | train_loss 0.6048 | val_loss 0.6654
+Mon 13 Jan 2025 18:01:53 run.py INFO | end of epoch  84 | time: 17.56s | train_loss 0.6071 | val_loss 0.6434
+Mon 13 Jan 2025 18:02:11 run.py INFO | end of epoch  85 | time: 17.52s | train_loss 0.5965 | val_loss 0.6323
+Mon 13 Jan 2025 18:02:29 run.py INFO | end of epoch  86 | time: 17.77s | train_loss 0.5920 | val_loss 0.6418
+Mon 13 Jan 2025 18:02:46 run.py INFO | end of epoch  87 | time: 17.73s | train_loss 0.5979 | val_loss 0.6533
+Mon 13 Jan 2025 18:03:04 run.py INFO | end of epoch  88 | time: 17.62s | train_loss 0.5976 | val_loss 0.6314
+Mon 13 Jan 2025 18:03:22 run.py INFO | end of epoch  89 | time: 18.05s | train_loss 0.6087 | val_loss 0.6316
+Mon 13 Jan 2025 18:03:40 run.py INFO | end of epoch  90 | time: 17.77s | train_loss 0.5952 | val_loss 0.6713
+Mon 13 Jan 2025 18:03:57 run.py INFO | end of epoch  91 | time: 17.44s | train_loss 0.6249 | val_loss 0.6420
+Mon 13 Jan 2025 18:04:15 run.py INFO | end of epoch  92 | time: 17.86s | train_loss 0.6015 | val_loss 0.6384
+Mon 13 Jan 2025 18:04:33 run.py INFO | end of epoch  93 | time: 17.78s | train_loss 0.6091 | val_loss 0.6348
+Mon 13 Jan 2025 18:04:51 run.py INFO | end of epoch  94 | time: 17.89s | train_loss 0.6016 | val_loss 0.6413
+Mon 13 Jan 2025 18:05:08 run.py INFO | end of epoch  95 | time: 17.52s | train_loss 0.5962 | val_loss 0.6265
+Mon 13 Jan 2025 18:05:26 run.py INFO | end of epoch  96 | time: 17.84s | train_loss 0.5910 | val_loss 0.6419
+Mon 13 Jan 2025 18:05:44 run.py INFO | end of epoch  97 | time: 17.66s | train_loss 0.6111 | val_loss 0.6320
+Mon 13 Jan 2025 18:06:02 run.py INFO | end of epoch  98 | time: 18.19s | train_loss 0.5926 | val_loss 0.6207
+Mon 13 Jan 2025 18:06:20 run.py INFO | end of epoch  99 | time: 17.75s | train_loss 0.5902 | val_loss 0.6596
+Mon 13 Jan 2025 18:06:20 run.py INFO MiPM training time: 1649.0630
+Mon 13 Jan 2025 18:06:27 run.py INFO Train data result:
+Mon 13 Jan 2025 18:06:27 run.py INFO Train RMSE: 0.0680, Train R2: 0.9994, Train MAE: 0.0423, Train MAPE: 0.2256
+Mon 13 Jan 2025 18:06:29 run.py INFO Test data result:
+Mon 13 Jan 2025 18:06:29 run.py INFO Test RMSE: 0.0989, Test R2: 0.9984, Test MAE: 0.0591, Test MAPE: 0.2520

@@ -19,13 +19,13 @@ filename = "./logfiles/MiPM.log"
 logging.basicConfig(filename=filename, format='%(asctime)s %(filename)s %(levelname)s %(message)s',
                     datefmt='%a %d %b %Y %H:%M:%S', filemode='w', level=logging.INFO)
 prediction_horizon = 1
-scaler_cols, scaler_target, X_train, y_train, X_test, y_test = Data_Pre(
-    horizon=prediction_horizon, dpath='../../Datasets/FDatasets/phase_1/stress.csv', tpath='../../Datasets/FDatasets/phase_1/targets.csv')
+scaler_cols, scaler_target, X_train, y_train, X_test, y_test, dlen, tlen = Data_Pre(
+    horizon=prediction_horizon, dpath='../../Datasets/Environment.csv', tpath='../../Datasets/Temperature.csv')
 train_len = int(X_train.shape[0] * 0.75)
 val_len = X_train.shape[0] - train_len
 train_loader, val_loader = Training_Loader(
-    X_train[:train_len], y_train[:train_len], X_train[train_len:], y_train[train_len:], dsize=35)
-test_loader = Testing_Loader(X_test, y_test, dsize=35)
+    X_train[:train_len], y_train[:train_len], X_train[train_len:], y_train[train_len:], dsize=dlen)
+test_loader = Testing_Loader(X_test, y_test, dsize=dlen)
 param_grid = {
     'dropout': [0.1 * i for i in range(1, 5)],
     'leaky_rate': [0.1 * i for i in range(1, 5)],

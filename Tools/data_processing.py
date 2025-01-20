@@ -14,9 +14,9 @@ from sklearn.model_selection import GridSearchCV
 def Data_Pre(window=64, batch_size=128, horizon=1, dpath='./Dataset/stress.csv', tpath='./Dataset/targets.csv'):
 
     x_data = pd.read_csv(dpath,
-                         index_col='collect_time', parse_dates=['collect_time'])
+                         index_col='Datetime', parse_dates=['Datetime'])
     y_data = pd.read_csv(tpath,
-                         index_col='collect_time', parse_dates=['collect_time'])
+                         index_col='Datetime', parse_dates=['Datetime'])
     # 扩大倍数
     # y_data.iloc[:, :3] *= 1000
     # 使用连续下沉量
@@ -26,7 +26,8 @@ def Data_Pre(window=64, batch_size=128, horizon=1, dpath='./Dataset/stress.csv',
     cols = x_data.columns
     target = y_data.columns
     raw_data = pd.merge(x_data, y_data, left_index=True, right_index=True)
-
+    tlen = len(target)
+    dlen = len(cols)
     L = len(x_data)
     train_size = int(0.6*L)
     val_size = int(0.2*L)
@@ -52,8 +53,8 @@ def Data_Pre(window=64, batch_size=128, horizon=1, dpath='./Dataset/stress.csv',
 
     # train
     X1 = np.zeros((train_size + val_size, window, len(cols)))
-    y_his1 = np.zeros((train_size + val_size, window, 7))
-    y1 = np.zeros((train_size + val_size, 7))
+    y_his1 = np.zeros((train_size + val_size, window, tlen))
+    y1 = np.zeros((train_size + val_size, tlen))
 
     for i, name in enumerate(data_train_cols_scale.columns):
         for j in range(window):
@@ -74,8 +75,8 @@ def Data_Pre(window=64, batch_size=128, horizon=1, dpath='./Dataset/stress.csv',
 
     # test
     X3 = np.zeros((test_size, window, len(cols)))
-    y_his3 = np.zeros((test_size, window, 7))
-    y3 = np.zeros((test_size, 7))
+    y_his3 = np.zeros((test_size, window, tlen))
+    y3 = np.zeros((test_size, tlen))
 
     for i, name in enumerate(data_test_cols_scale.columns):
         for j in range(window):
@@ -104,7 +105,7 @@ def Data_Pre(window=64, batch_size=128, horizon=1, dpath='./Dataset/stress.csv',
     y_train = y_train_t
     X_test = torch.cat((X_test_t, y_his_test_t), dim=2)
     y_test = y_test_t
-    return scaler_cols, scaler_target, X_train, y_train, X_test, y_test
+    return scaler_cols, scaler_target, X_train, y_train, X_test, y_test, dlen, tlen
 
 
 def Training_Loader(X_train_folds, y_train_folds, X_test_fold, y_test_fold, batch_size=32, dsize=38):

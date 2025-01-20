@@ -16,7 +16,7 @@ class gtnet(nn.Module, BaseEstimator):
         # graph convolution depth
         self.gcn_depth = gcn_depth
         # number of nodes/variables
-        self.num_nodes = 45
+        self.num_nodes = 14
         # dim of nodes
         self.node_dim = 40
         # prop alpha
@@ -140,5 +140,5 @@ class gtnet(nn.Module, BaseEstimator):
         x = F.relu(skip)
         x = F.relu(self.end_conv_1(x))
         x = self.end_conv_2(x)
-        x = x[:, :, -7:, :]
+        x = x[:, :, -2:, :]
         return x, None
