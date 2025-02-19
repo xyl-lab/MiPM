@@ -20,7 +20,7 @@ logging.basicConfig(filename=filename, format='%(asctime)s %(filename)s %(leveln
                     datefmt='%a %d %b %Y %H:%M:%S', filemode='w', level=logging.INFO)
 prediction_horizon = 1
 scaler_cols, scaler_target, X_train, y_train, X_test, y_test, dlen, tlen = Data_Pre(
-    horizon=prediction_horizon, dpath='../../Datasets/Environment.csv', tpath='../../Datasets/Temperature.csv')
+    horizon=prediction_horizon, dpath='./Dataset/sml2010/Environment.csv', tpath='./Dataset/sml2010/Temperature.csv')
 train_len = int(X_train.shape[0] * 0.75)
 val_len = X_train.shape[0] - train_len
 train_loader, val_loader = Training_Loader(

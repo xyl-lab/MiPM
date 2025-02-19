@@ -1,6 +1,6 @@
 
 # Source code file directory description
-* **Dataset**：Save the datasets collected during the three phases of the Zhang Jinggao open caisson sinking: Phase1, Phase2, and Phase3. Each dataset contains two csv files, namely the bottom structure stress data `stress.csv` and the caisson sinking attitude data `targets.csv`. Also contains the SML2010 dataset `sml2010.csv`
+* **Dataset**：Save the datasets collected during the three phases of the Zhang Jinggao open caisson sinking: Phase1, Phase2, and Phase3. Each phase dataset contains two csv files, namely the bottom structure stress data `stress.csv`, which is used as the exogenous driving series, and the open caisson sinking attitude data `targets.csv`, which is used as the predicted target series. The `sml2010` folder includes two csv files, which are the surrounding environment data `Environment.csv` as the exogenous driving series and the indoor temperature data `Temperature.csv` as the prediction target series.
 * **logfiles**：Save the parameter adjustment process of the MiPM model four-fold cross validation
 * **networks**：Save the MiPM model structure and the related files of the LSTM model structure, where `net.py` and `layer.py` save the MiPM model structure, and `LSTMModel.py` saves the LSTM model structure
 * **pictures**：Save the images used in the `README` file
@@ -196,6 +196,7 @@ For the following baseline models, this paper adjusts the parameters according t
 * Software environment: python3.9, pytorch2.10GPU
 # Run code
 `Python run.py`
+When running different datasets, modify the `dpath` and `tpath` file paths in `run.py`, where `dpath` represents the exogenous driving series file path and `tpath` represents the predicted target series file path.
 # Experimental result
 
 Each model in this paper predicts seven attitude indicators of the open caisson, and uses the correlation coefficient R2, root mean square error RMSE, and mean absolute percentage error MAPE as evaluation indicators. In addition, to verify the generalization ability of the model, single-step prediction is also performed on the sml2010 dataset, and the prediction accuracy is compared. The prediction results of each model on each dataset are shown in the following table.
